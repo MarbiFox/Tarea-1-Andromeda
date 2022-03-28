@@ -1,11 +1,14 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef List_h
+#define List_h
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
 
-/*Crear nodo*/
-Node * createNode(void * data);
+typedef struct List List;
 
 /*Crear lista*/
-List * createList();
+List * createList(void);
 
 /*Primer elemento de la Lista*/
 void * firstList(List * list);
