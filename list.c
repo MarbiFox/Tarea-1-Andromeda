@@ -11,15 +11,13 @@ struct Node {
     Node * prev;
 };
 
+typedef List List;
 
 struct List {
     Node * head;
     Node * tail;
     Node * current;
 };
-
-typedef List List;
-
 
 Node * createNode(void * data) {
     Node * new = (Node *)malloc(sizeof(Node));
@@ -96,7 +94,6 @@ void pushCurrent(List * list, void * data) {
 
     if(list->current==list->tail)
         list->tail=new;
-
 }
 
 void * popFront(List * list) {
@@ -119,10 +116,8 @@ void * popCurrent(List * list) {
     if (aux->next != NULL) 
         aux->next->prev = aux->prev;
     
-    
     if (aux->prev != NULL) 
         aux->prev->next = aux->next;
-    
     
     void * data = (void *)aux->data;
     
@@ -133,9 +128,6 @@ void * popCurrent(List * list) {
         list->head = list->current->next;
         
     list->current = aux->prev;
-
-
-
     
     free(aux);
     
