@@ -101,43 +101,31 @@ ListaCancion importarCanciones () {
 	//Definir Lista de Canciones.
     List * songsList = createList();
     
-    //Variable Dinámica strSong.
-    Cancion * strSong = (Cancion*) malloc (sizeof(Cancion));
-    
     //Crear Datos de Lectura.
     char cadena[1024];
 	int i; //Contador
 	int contCanciones = 0;
 	while (fgets(cadena, 1023, fcsv) != NULL) { //Leerá las cadenas una por una.
-    	for (i = 0; i < 5; i++) { //Itera los campos de la cadena.
+    	Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
+		for (i = 0; i < 5; i++) { //Itera los campos de la cadena.
             const char * aux = getField(cadena, i); // Se obtiene el nombre
 			printf(" %s",aux);
-            if (i == 0)	strcpy(strSong->name, aux);
-            if (i == 1) strcpy(strSong->artist, aux);
-            if (i == 2) strcpy(strSong->genre, aux);
-            if (i == 3) strcpy(strSong->year, aux);
-            if (i == 4) strcpy(strSong->repList, aux);
+            if (i == 0)	strcpy(auxSong->name, aux);
+            if (i == 1) strcpy(auxSong->artist, aux);
+            if (i == 2) strcpy(auxSong->genre, aux);
+            if (i == 3) strcpy(auxSong->year, aux);
+            if (i == 4) strcpy(auxSong->repList, aux);
         }
-        //printf("\n");
-        pushBack(songsList, strSong);
+        pushBack(songsList, auxSong);
         contCanciones++;
 	}
 	printf("\n");
-	fclose(fcsv); //Cerrar el Archivo.
+	fclose(fcsv); //Cerrar el Archivo.	
 	
 	//Inicializar la Lista Global.
 	listaGlobal.Canciones = songsList;
 	listaGlobal.cant = contCanciones;
 	listaGlobal.listName = "Lista Global";
-	
-	//Bien.
-	/*
-	if (songsList->tail == songsList->head) {
-		printf("\nAAAAAAAAAAAAAAAAA");
-	}
-	else {
-		printf("\nAAAAAAAAAAA pero con felicidad");
-	}*/
 	
 	system("pause");
 	
@@ -145,7 +133,7 @@ ListaCancion importarCanciones () {
 }
 
 List * crearListas (ListaCancion globalList){
-	//Crear un arreglo de listas de música.
+	//Crear una Lista de listas de música.
 	List * musicRepList = createList(); //Almacena tipo ListaCancion
 	
 	//Crear una Lista de canciones para asignar.
@@ -157,7 +145,7 @@ List * crearListas (ListaCancion globalList){
 	//Variable auxiliar para encontrar el nombre de la lista.
 	Cancion * auxSong = NULL;
 	auxSong = firstList(globalList.Canciones);
-	printf("%s", auxSong->repList);
+	printf("%s\n", auxSong->repList);
 	char * nameList = auxSong->repList; //Buscar el nombre de la lista.
 	pushBack(auxSongList, auxSong); //Agregar a la lista de canciones actual.
 	
@@ -169,13 +157,9 @@ List * crearListas (ListaCancion globalList){
 		int contSongs = 1;
 		for (i = 1; i < k; i++) {
 			auxSong = nextList(globalList.Canciones);
-			printf("%s", auxSong->repList);
-			printf("%s", nameList);
-			break;
 			if ((strcmp(auxSong->repList, nameList)) == 0) {
 				pushBack(auxSongList, auxSong);
 				contSongs++;
-				printf("\nAAAAAAAAAAAAAAAAA");
 			}
 		}
 		
@@ -183,13 +167,13 @@ List * crearListas (ListaCancion globalList){
 		ListaCancion * musicList = (ListaCancion *) malloc (sizeof(ListaCancion));
 		musicList->Canciones = auxSongList;
 		musicList->cant = contSongs;
+		printf("%d", contSongs);
 		musicList->listName = nameList;
 		pushBack(musicRepList, musicList); //Agregar a la lista de listas de Reproducción.
 		
 		//Comprobar si hay más Listas.
 		if (musicList->cant == globalList.cant) break;
 		sumSong = sumSong + musicList->cant;
-		printf("\nAAAAAAAAAAAAAAAAA");
 		
 		//Recorrer lista global otra vez hasta hallar la otra lista.
 		auxSong = firstList(globalList.Canciones);
