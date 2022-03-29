@@ -8,7 +8,7 @@ typedef struct {
     char name[100]; //Nombre de la Canción.
     char artist[50]; //Nombre del Artista.
     char genre[50]; //Género de la canción.
-	char year[4]; //Año de la Canción.    
+	char year[5]; //Año de la Canción.    
     char repList[10]; //Lista de Reproducción.
 } Cancion;
 
@@ -113,7 +113,7 @@ ListaCancion importarCanciones () {
     	Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
 		for (i = 0; i < 5; i++) { //Itera los campos de la cadena.
             const char * aux = getField(cadena, i); // Se obtiene el nombre
-			printf(" %s",aux);
+			printf(" %s -", aux);
             if (i == 0)	strcpy(auxSong->name, aux);
             if (i == 1) strcpy(auxSong->artist, aux);
             if (i == 2) strcpy(auxSong->genre, aux);
@@ -226,6 +226,52 @@ List * crearListas (ListaCancion globalList){
 	return musicRepList;
 }
 
+void exportarCanciones (ListaCancion listaGlobal) {
+	
+	//Abrir o Crear el archivo para exportar
+	FILE * fout;
+	fout = fopen("Canciones.txt", "w+");
+	if (fout == NULL) {
+		printf("Error al abrir archivo.csv\n");
+		exit(1);
+	}
+	
+	//Ver que tiene adentro.
+	char * cadena = NULL;
+	fgets(cadena, 1023, fout);
+	printf("---%s---", cadena);
+	
+}
+
+void mostrarCanciones (ListaCancion listaGlobal){
+	
+    //Crear Interfaz.
+    printf("MOSTRANDO TODAS LAS CANCIONES...\n\n");
+    
+    //Verificar si hay más canciones.
+    if (listaGlobal.cant == NULL || listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
+    
+    //Mostrar cada una de las canciones.
+    Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
+    auxSong = firstList(listaGlobal.Canciones); //Dirigirse a la primera canción de la lista.
+    int cantCampos = 5;
+    int cantSongs = listaGlobal.cant;
+    for (cantSongs; cantSongs != 0; cantSongs--) {
+        //Mostrar los datos de las Canciones.
+		printf("%s -", auxSong->name);
+        printf(" %s -", auxSong->artist);
+        printf(" %s -", auxSong->genre);
+		printf(" %s -", auxSong->year);
+		printf(" %s\n", auxSong->repList);
+		//Moverse a la siguiente canción.
+        auxSong = nextList(listaGlobal.Canciones);
+    }
+    
+	//Mensaje de Salida
+    if (listaGlobal.cant != 1) printf("Hay un total de %d canciones...", listaGlobal.cant);
+    else printf("Hay sólo una canción...", listaGlobal.cant);
+    system("pause");
+}
 
 //El main servirá para dirigir el programa y abrir la interfaz.
 int main () {
@@ -241,7 +287,8 @@ int main () {
 				listasMusica = crearListas(listaGlobal);
                 break;
             case 2:
-                printf("2\n");
+                exportarCanciones(listaGlobal);
+				printf("2\n");
                 break;
             case 3:
 				printf("3\n");
@@ -259,18 +306,22 @@ int main () {
                 printf("7\n");
                 break;
             case 8:
-                printf("8\n");
+                mostrarCanciones(listaGlobal);
                 break;
             case 9:
-                printf("Gracias por usar nuestro programa, recuerda no piratear ;)\n");
+                system("cls");
+				printf("Gracias por usar nuestro programa, recuerda no piratear ;)\n");
+                system("pause");
                 break;
             default:
-                printf("Tecla ingresada no valida\n");
+				system("cls");
+				printf("Tecla ingresada no valida\n");
+				system("pause");
                 break;
         }
         system("cls");
     }
-    system("pause");
+    //system("pause");
     /* Se puede hacer lo mismo con system("pause");
     scanf("%d", &op); // COMENTARIO: Esto de acá es sólo para que no se me cierre el programa en 2 milisegundos :)
     */

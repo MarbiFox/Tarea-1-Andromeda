@@ -7,6 +7,21 @@ sólo espero que se cumpla con colocar aquí de primera mano la información
 de sus cambios, para ir más ordenado :)
 Como sea, abajo de este párrafo comenzarán las actualizaciones.
 
+/***** ACTUALIZACIÓN v0.3 (ALPHA) *****/
+Autor: Marbifox.
+Datos del Parche:
+- Función MOSTRAR CANCIONES implementada, utiliza la lista global para mostrar
+todas las canciones.
+- Pequeña remodelación de la interfaz general, está sujeta a cambios.
+NOTAS:
+- Los cambios a la interfaz son más que nada estéticos. Pueden mejorar.
+
+|
+|
+|
+|
+|
+
 /***** ACTUALIZACIÓN v0.2 (ALPHA) *****/
 Autor: Grupo Andrómeda.
 Datos del Parche:
