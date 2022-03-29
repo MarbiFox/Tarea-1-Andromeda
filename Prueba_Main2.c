@@ -50,8 +50,12 @@ const char * getField (char * tmp, int campo) {
     int inicio = 0;
 	int pos = 0;
     int final = 0;
-    while(tmp[pos]!='\0'){
- 
+    while(tmp[pos] != '\0'){
+        
+        if(tmp[pos] == '\n'){
+            tmp[strlen(tmp) - 1] = '\0';
+        }
+        
         if(tmp[pos]== '\"'){
             booleanComillas = 1-booleanComillas;
             if(booleanComillas) inicio = pos+1;
@@ -114,7 +118,10 @@ ListaCancion importarCanciones () {
             if (i == 1) strcpy(auxSong->artist, aux);
             if (i == 2) strcpy(auxSong->genre, aux);
             if (i == 3) strcpy(auxSong->year, aux);
-            if (i == 4) strcpy(auxSong->repList, aux);
+            if (i == 4) {
+                printf("\n",aux);
+                strcpy(auxSong->repList, aux);
+            }
         }
         pushBack(songsList, auxSong);
         contCanciones++;
@@ -145,46 +152,76 @@ List * crearListas (ListaCancion globalList){
 	//Variable auxiliar para encontrar el nombre de la lista.
 	Cancion * auxSong = NULL;
 	auxSong = firstList(globalList.Canciones);
-	printf("%s\n", auxSong->repList);
 	char * nameList = auxSong->repList; //Buscar el nombre de la lista.
 	pushBack(auxSongList, auxSong); //Agregar a la lista de canciones actual.
 	
 	int sumSong = 0; //Sumatoria de Canciones
 	int i;
 	int k = globalList.cant;
-	while (sumSong <= k-1) {
+	while (sumSong < k) {
 		//Recorrer el arreglo en busca de las canciones que pertenecen a la lista.
-		int contSongs = 1;
+		int contSongs = 0;
 		for (i = 1; i < k; i++) {
 			auxSong = nextList(globalList.Canciones);
 			if ((strcmp(auxSong->repList, nameList)) == 0) {
 				pushBack(auxSongList, auxSong);
 				contSongs++;
+				//printf("\n-----%s-----", auxSong->name);
 			}
 		}
+		
+		//printf("\n-----%d-----", contSongs);
+		//printf("\n-----%s-----\n\n", nameList);
 		
 		//Crear una lista de reproducción.
 		ListaCancion * musicList = (ListaCancion *) malloc (sizeof(ListaCancion));
 		musicList->Canciones = auxSongList;
 		musicList->cant = contSongs;
-		printf("%d", contSongs);
 		musicList->listName = nameList;
 		pushBack(musicRepList, musicList); //Agregar a la lista de listas de Reproducción.
 		
+        //BORRAR
+        int cont = 0;
+        auxSong = firstList(auxSongList);
+        while (auxSong->name != NULL)
+        {
+            cont++;
+            printf("%d------- %s\n", cont, auxSong->name);
+            auxSong = nextList(auxSongList); //BORRAR
+        }
+        cont = 0;
+
+        cleanList(auxSongList);
+
 		//Comprobar si hay más Listas.
 		if (musicList->cant == globalList.cant) break;
+        if (sumSong == 0) sumSong++; //Contar la Primera Canción.
 		sumSong = sumSong + musicList->cant;
-		
+		//printf("\n--assa---%d---sasa--", sumSong); BORRAR.
+
 		//Recorrer lista global otra vez hasta hallar la otra lista.
 		auxSong = firstList(globalList.Canciones);
-		for (int i = 0; i < globalList.cant; i++) {
+		for (int i = 0; i < k; i++) {
 			auxSong = nextList(globalList.Canciones);
-			if (strcmp(auxSong->repList, nameList) != 1) {
-				nameList = auxSong->repList;
+            //printf("\n\n----%s---%s\n", auxSong->name, auxSong->repList);
+			if (strcmp(auxSong->repList, nameList) != 0) {
+				strcpy(nameList,auxSong->repList);
 				auxSong = firstList(globalList.Canciones);
+                break;
 			}
 		}
+
+        system("pause");
  	}
+
+    //BORRAR 
+    /*auxSong = lastList(globalList.Canciones);
+    printf("\n----%s---%s", auxSong->name, auxSong->repList);
+    auxSong = firstList(globalList.Canciones);
+    printf("\n----%s---%s", auxSong->name, auxSong->repList);
+    int co = strcmp(auxSong->repList, "Lista 1\n");
+    printf("   %d", co);*/
+    
 	system("pause");
 	return musicRepList;
 }

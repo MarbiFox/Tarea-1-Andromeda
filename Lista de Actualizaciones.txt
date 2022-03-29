@@ -7,6 +7,39 @@ sólo espero que se cumpla con colocar aquí de primera mano la información
 de sus cambios, para ir más ordenado :)
 Como sea, abajo de este párrafo comenzarán las actualizaciones.
 
+/***** ACTUALIZACIÓN v0.2 (ALPHA) *****/
+Autor: Grupo Andrómeda.
+Datos del Parche:
+- Función IMPORTAR CANCIONES reparada, ahora guarda de manera correcta en
+la lista global.
+- Añadida la función CREAR LISTAS, la cual ayuda a IMPORTAR CANCIONES a
+distribuir las canciones de la lista global en sub-listas de reproducción
+específicas (Datos structs de Tipo ListaCanción).
+- Se mantiene el formato de interfaz visto en actualizaciones menores.
+A destacar:
+- Acceso a una canción: nombreListaCancion.nombreLista->head->data para la
+primera (accesible debido a que las listas ya tienen datos), se requiere de
+la función nextList para avanzar.
+- Acceso a una Lista de Reproducción: listasMusica es la variable tipo lista
+que almacena todas las LISTAS DE REPRODUCCIÓN. Utilizar las funciones de list.c
+para acceder a ellas. Para saber cual lista es cual, sólo acceder al campo
+nombreListaCancion.listName para encontrar el nombre.
+NOTAS (COMENTARIOS):
+- Hay algunos prints que innecesarios que quedaron activos en el código, pero
+sirven para demostrar que las listas se guardaron de la forma correcta.
+- Hay prints y secciones de código en comentarios, pueden borrarlos.
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+
 /***** App SinNombre: v0.1 (ALPHA) *****/
 Autor: MarbiFox.
 Cambios:
