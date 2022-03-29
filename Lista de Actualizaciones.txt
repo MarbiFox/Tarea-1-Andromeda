@@ -13,6 +13,8 @@ Datos del Parche:
 - Función MOSTRAR CANCIONES implementada, utiliza la lista global para mostrar
 todas las canciones.
 - Pequeña remodelación de la interfaz general, está sujeta a cambios.
+- Cambió la variable year[4] a year[5] en la struct Cancion, esto debido a un
+error específico en la impresión de strings.
 NOTAS:
 - Los cambios a la interfaz son más que nada estéticos. Pueden mejorar.
 
