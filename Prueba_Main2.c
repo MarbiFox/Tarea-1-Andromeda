@@ -273,6 +273,53 @@ void mostrarCanciones (ListaCancion listaGlobal){
     system("pause");
 }
 
+void EliminarCancion(ListaCancion listaGlobal){
+    if (listaGlobal.cant == NULL || listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
+
+    char yearCmp[5];
+    char nameCmp[100];
+    char artCmp[50];
+    
+	//areglar entrada
+    printf("\n escriba el nombre de la cancion:");
+    scanf("%100s",&nameCmp);
+
+
+    printf("\n escriba el nombre del el/la artista:");
+    scanf("%s",&artCmp);
+    puts("");
+
+    printf("\n escriba el año de la cancion:");
+    scanf("%d",&yearCmp);
+    puts("");
+
+    int cantidad=listaGlobal.cant;
+    printf("\n status cantidad:si");
+
+    Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
+    printf("\n status malloc:si");
+    auxSong = firstList(listaGlobal.Canciones); //Dirigirse a la primera canción de la lista.
+    printf("\n status first:si");
+    
+    int eliminacion=0;
+
+    for(int i=0;i<cantidad;i++){
+        if(strcmp(auxSong->name,nameCmp) == 0){  
+            if(strcmp(auxSong->artist,artCmp) == 0){
+                if(strcmp(auxSong->year,yearCmp) == 0){
+                    printf("\n--------Se elimino la cancion--------\n");
+                    popCurrent(listaGlobal.Canciones);
+                    eliminacion=1;
+                    break;
+                }
+            }
+        }
+        auxSong=nextList(listaGlobal.Canciones);
+    }
+    if (eliminacion==0) printf("\n--------No se encontro la cancion--------\n");
+    system("pause");
+}
+
 //El main servirá para dirigir el programa y abrir la interfaz.
 int main () {
     int op = 0;
@@ -297,7 +344,8 @@ int main () {
                 printf("4\n");
                 break;
             case 5:
-                printf("5\n");
+		EliminarCanciones(listaGlobal);
+                		printf("5\n");
                 break;
             case 6:
                 printf("6\n");
@@ -306,7 +354,7 @@ int main () {
                 printf("7\n");
                 break;
             case 8:
-                mostrarCanciones(listaGlobal);
+                EliminarCancion(listaGlobal);
                 break;
             case 9:
                 system("cls");
