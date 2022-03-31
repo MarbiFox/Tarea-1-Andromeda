@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
-#include "list.c"
+
 
 typedef struct {
     char name[100]; //Nombre de la Canción.
@@ -93,10 +93,16 @@ ListaCancion importarCanciones () {
 	
 	//Definir Lista Global de Canciones.
 	ListaCancion listaGlobal;
+
+    //ingresar nombre archivo
+    
+    printf("\nIngrese el nombre del archivo y su extension (nombre.tipo)\n");
+    char archivo[31] = {};
+    scanf("%s", archivo);
 	
 	//Abrir Archivo.
 	FILE * fcsv;
-	fcsv = fopen ("Canciones.csv", "r");
+	fcsv = fopen (archivo, "r");
 	if (fcsv == NULL) {
 		printf("Error al abrir archivo.csv\n");
 		return listaGlobal;
@@ -249,7 +255,7 @@ void mostrarCanciones (ListaCancion listaGlobal){
     printf("MOSTRANDO TODAS LAS CANCIONES...\n\n");
     
     //Verificar si hay más canciones.
-    if (listaGlobal.cant == NULL || listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
+    if ( listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
     
     //Mostrar cada una de las canciones.
     Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
@@ -273,8 +279,131 @@ void mostrarCanciones (ListaCancion listaGlobal){
     system("pause");
 }
 
+
+void buscarPorGenero(ListaCancion listGlobal){
+    char artistGenre[21] = {};
+    printf("\nIngrese el genero de la cancion:\n");
+    getchar();
+    scanf("%[0-9a-zA-Z ,-]",artistGenre);
+    puts(artistGenre);
+
+    int cont;
+    int i = 0;
+    Cancion * aux;
+    aux = firstList(listGlobal.Canciones);
+    for (cont = 0 ; cont < listGlobal.cant ; cont++){
+        if (strcmp(aux->genre,artistGenre) == 0){
+            printf("\n-------------------------------------\n");
+            printf("Nombre: %s\n",aux->name);
+            printf("Artista: %s\n",aux->artist);
+            printf("Genero: %s\n",aux->genre);
+            printf("Ano: %s\n",aux->year);
+            printf("Lista de Reproduccion: %s\n",aux->repList);
+            printf("-------------------------------------\n");
+            i++;
+        }
+        aux = nextList(listGlobal.Canciones);
+    }
+    if (i == 0){
+        printf("\nLo sentimos, no encontramos ninguna cancion con ese nombre en nuestra base :(\n");
+    }
+
+}
+
+void buscarPorArtista(ListaCancion listGlobal){
+    char artistSong[21] = {};
+    printf("\nIngrese el artista de la cancion:\n");
+    getchar();
+    scanf("%21[^\n]s",artistSong);
+    puts(artistSong);
+
+    int cont;
+    int i = 0;
+    Cancion * aux;
+    aux = firstList(listGlobal.Canciones);
+    for (cont = 0 ; cont < listGlobal.cant ; cont++){
+        if (strcmp(aux->artist,artistSong) == 0){
+            printf("\n-------------------------------------\n");
+            printf("Nombre: %s\n",aux->name);
+            printf("Artista: %s\n",aux->artist);
+            printf("Genero: %s\n",aux->genre);
+            printf("Ano: %s\n",aux->year);
+            printf("Lista de Reproduccion: %s\n",aux->repList);
+            printf("-------------------------------------\n");
+            i++;
+        }
+        aux = nextList(listGlobal.Canciones);
+    }
+    if (i == 0){
+        printf("\nLo sentimos, no encontramos ninguna cancion con ese nombre en nuestra base :(\n");
+    }
+
+}
+
+void buscarPorNombre(ListaCancion listGlobal){
+    char nombreCancion[81] = {};
+    printf("\nIngrese el nombre de la cancion:\n");
+    getchar();
+    scanf("%81s[^\n]",nombreCancion);
+    printf("%s\n",nombreCancion);
+
+    int cont;
+    int i = 0;
+    Cancion * aux;
+    aux = firstList(listGlobal.Canciones);
+    for (cont = 0 ; cont < listGlobal.cant ; cont++){
+    //while(aux!=NULL){
+        if (strcmp(aux->name,nombreCancion) == 0){
+            printf("\n-------------------------------------\n");
+            printf("Nombre: %s\n",aux->name);
+            printf("Artista: %s\n",aux->artist);
+            printf("Genero: %s\n",aux->genre);
+            printf("Ano: %s\n",aux->year);
+            printf("Lista de Reproduccion: %s\n",aux->repList);
+            printf("-------------------------------------\n");
+            i++;
+        }
+        aux = nextList(listGlobal.Canciones);
+    }
+    if (i == 0){
+        printf("\nLo sentimos, no encontramos ninguna cancion con ese nombre en nuestra base :(\n");
+    }
+}
+
+void buscarCancion(ListaCancion listGlobal){
+    if (listGlobal.cant == 0){
+        printf("No hay canciones para poder realizar una busqueda :( \n\n");
+        return;
+    } 
+
+    printf("\n1. Buscar por nombre de la cancion\n");
+    printf("2. Buscar por artista de la cancion\n");
+    printf("3. Buscar por genero\n");
+    printf("4. Volver al menu\n\n");
+
+    int op=0;
+    while (op!=4){
+        printf("Ingrese su opcion: ");
+        scanf("%i", &op);
+        if (op == 1){
+           buscarPorNombre(listGlobal);
+        }
+        if (op == 2){
+           buscarPorArtista(listGlobal);
+        }
+        if (op== 3){
+           buscarPorGenero(listGlobal);
+        }
+        if (op == 4){
+           break;
+        }
+    }
+    system("pause");
+}
+
+
 void EliminarCancion(ListaCancion listaGlobal){
-    if (listaGlobal.cant == NULL || listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
+    if (listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
 
     char yearCmp[5];
     char nameCmp[100];
@@ -341,11 +470,12 @@ int main () {
 				printf("3\n");
                 break;
             case 4:
+                buscarCancion(listaGlobal);
                 printf("4\n");
                 break;
             case 5:
-		EliminarCanciones(listaGlobal);
-                		printf("5\n");
+		        //EliminarCanciones(listaGlobal);
+                printf("5\n");
                 break;
             case 6:
                 printf("6\n");
@@ -369,7 +499,7 @@ int main () {
         }
         system("cls");
     }
-    //system("pause");
+    system("pause");
     /* Se puede hacer lo mismo con system("pause");
     scanf("%d", &op); // COMENTARIO: Esto de acá es sólo para que no se me cierre el programa en 2 milisegundos :)
     */
