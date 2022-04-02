@@ -402,51 +402,79 @@ void buscarCancion(ListaCancion listGlobal){
 }
 
 
-void EliminarCancion(ListaCancion listaGlobal){
+ListaCancion EliminarCancion(ListaCancion listaGlobal) {
     if (listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
 
-    char yearCmp[5];
-    char nameCmp[100];
-    char artCmp[50];
+    char yearCmp[5];//año de la cancion que queremos eliminar
+    char nameCmp[100];//nombre de la cancion que queremos eliminar
+    char artCmp[50];//nombre del aritista de la cancion que vamos a eleminar
     
-	//areglar entrada
+	//intuducimos los datps de la cancion a eliminar
+    
+    getchar();
     printf("\n escriba el nombre de la cancion:");
-    scanf("%100s",&nameCmp);
+    scanf("%100[^\n]s",nameCmp);
 
-
+    getchar();
     printf("\n escriba el nombre del el/la artista:");
-    scanf("%s",&artCmp);
-    puts("");
-
-    printf("\n escriba el año de la cancion:");
-    scanf("%d",&yearCmp);
-    puts("");
-
-    int cantidad=listaGlobal.cant;
-    printf("\n status cantidad:si");
-
-    Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
-    printf("\n status malloc:si");
-    auxSong = firstList(listaGlobal.Canciones); //Dirigirse a la primera canción de la lista.
-    printf("\n status first:si");
+    scanf("%50[^\n]s",artCmp);
     
-    int eliminacion=0;
+    getchar();
+    printf("\n escriba el año de la cancion:");
+    scanf("%5[^\n]s",yearCmp);
+
+    int cantidad=listaGlobal.cant;//cantidad de canciones en la lista
+
+    
+    List * songsList = createList();// lista auxiliar la cual luego vamos a asignar a listaGlobal.canciones
+
+    Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));//auxiliar para buscar la cancion que queremos eliminar
+
+    auxSong = firstList(listaGlobal.Canciones); //Dirigirse a la primera canción de la lista.
+    
+    int eliminacion=0;// dato verificador para eliminar la cancion
+    int push=1;// dato para evitar meter la cancion que queremos eliminar a songList 
 
     for(int i=0;i<cantidad;i++){
-        if(strcmp(auxSong->name,nameCmp) == 0){  
-            if(strcmp(auxSong->artist,artCmp) == 0){
-                if(strcmp(auxSong->year,yearCmp) == 0){
+        push=1;// iniciamos en cada ciclo push = 1
+
+        if(strcmp(auxSong->name,nameCmp) == 0){//comparamos el nombre
+            
+            if(strcmp(auxSong->artist,artCmp) == 0){//comparamos el arista
+                
+                if(strcmp(auxSong->year,yearCmp) == 0){//comparamos el año
+                    
+                    //si todo se cumple encontraremos la cancion a eliminar
                     printf("\n--------Se elimino la cancion--------\n");
-                    popCurrent(listaGlobal.Canciones);
-                    eliminacion=1;
-                    break;
+
+                    listaGlobal.cant--;//se descuenta de la cantidad de canciones
+
+                    eliminacion=1;//verificamos que se encontro
+
+                    push=0;//evitamos que se agrege a la lista nueva
                 }
             }
         }
+
+        if (push==1){//si push es 1 significa que no es la cancion que estabamos buscando asi que se agrega a la lista nueva
+            pushBack(songsList,auxSong);
+        }
+        
+        //next para pasar de cancion en cancion
         auxSong=nextList(listaGlobal.Canciones);
     }
+
+    //asignamos al nueva lista sin la cancion (siempre cuando se alla encontrado)
+    if(eliminacion==1) listaGlobal.Canciones=songsList;
+
+    //si no se encontro la cancion se muestra un mensaje 
+    //si "eliminacion" es 0 significa que no se encontro 
     if (eliminacion==0) printf("\n--------No se encontro la cancion--------\n");
+
     system("pause");
+
+    //se retorna la lista
+    return listaGlobal;
 }
 
 //El main servirá para dirigir el programa y abrir la interfaz.
