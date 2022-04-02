@@ -7,6 +7,23 @@ sólo espero que se cumpla con colocar aquí de primera mano la información
 de sus cambios, para ir más ordenado :)
 Como sea, abajo de este párrafo comenzarán las actualizaciones.
 
+/***** ACTUALIZACIÓN v0.4 (ALPHA) *****/
+Autor: GRUPO ANDRÓMEDA.
+Datos del Parche:
+- Función BUSCAR CANCIÓN, ELIMINAR CANCIÓN Y MOSTRAR NOMBRES DE LISTA implementadas.
+- Ingresado avance de función MOSTRAR LISTA DE REPRODUCCIÓN.
+- Pequeña remodelación de la interfaz general, está sujeta a cambios.
+NOTAS:
+- Los cambios a la interfaz son más que nada estéticos. Pueden mejorar.
+- Falta ver casos especiales: Ninguna canción, buscar por más de un género,
+Una lista, etc.
+
+|
+|
+|
+|
+|
+
 /***** ACTUALIZACIÓN v0.3 (ALPHA) *****/
 Autor: Marbifox.
 Datos del Parche:
