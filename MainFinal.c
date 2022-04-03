@@ -106,17 +106,12 @@ ListaCancion importarCanciones () {
 	//Definir Lista Global de Canciones.
 	ListaCancion listaGlobal;
 
-	//ingresar nombre archivo
-    printf("\nIngrese el nombre del archivo y su extension (nombre.tipo)\n");
-    char archivo[31] = {};
-    scanf("%s", archivo);
-	
 	//Abrir Archivo.
 	FILE * fcsv;
-	fcsv = fopen (archivo, "r");
+	fcsv = fopen ("Canciones.csv", "r");
 	if (fcsv == NULL) {
 		printf("Error al abrir archivo.csv\n");
-		return listaGlobal;
+		exit(1);
 	}
 
 	//Definir Lista de Canciones.
@@ -358,12 +353,11 @@ void buscarPorNombre(ListaCancion listGlobal){
 
 //Menú de busqueda por nombre, artista y género
 void buscarCancion(ListaCancion listGlobal){
-    system("cls");
     if (listGlobal.cant == 0){
         printf("No hay canciones para poder realizar una busqueda :( \n\n");
         return;
     } 
-    
+    system("cls");
 
     int op;
     while (1){
@@ -637,7 +631,6 @@ int main () {
 				listaGlobal = importarCanciones();
 				listasMusica = crearListas(listaGlobal);
 				cont = 1;
-                system("cls");
                 break;
             case 2:
                 exportarCanciones(listaGlobal);
@@ -647,7 +640,6 @@ int main () {
                 break;
             case 4:
                 buscarCancion(listaGlobal);
-                system("pause");
                 break;
             case 5:
 			    listaGlobal=EliminarCancion(listaGlobal);
@@ -673,10 +665,8 @@ int main () {
 				system("pause");
                 break;
         }
-        system("cls");
     }
     system("pause");
-    
     
     return 0;
 }
