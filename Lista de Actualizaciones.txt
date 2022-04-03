@@ -7,6 +7,23 @@ sólo espero que se cumpla con colocar aquí de primera mano la información
 de sus cambios, para ir más ordenado :)
 Como sea, abajo de este párrafo comenzarán las actualizaciones.
 
+/***** ACTUALIZACIÓN v0.5 (ALPHA) *****/
+Autor: GRUPO ANDRÓMEDA.
+Datos del Parche:
+- Función MOSTRAR LISTA DE REPRODUCCIÓN implementada.
+- Resuelto error de cleanList().
+- ELiminada la función EliminarCancion obsoleta.
+NOTAS:
+- Falta ver casos especiales: Ninguna canción, buscar por más de un género,
+Una lista, etc.
+- Falta Función AGREGAR.
+
+|
+|
+|
+|
+|
+
 /***** ACTUALIZACIÓN v0.4 (ALPHA) *****/
 Autor: GRUPO ANDRÓMEDA.
 Datos del Parche:

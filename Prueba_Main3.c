@@ -43,7 +43,7 @@ int mostrarInterfaz (int num) {
 }
 
 //Función para obtener un elemento del string.
-const char * getField (char * tmp, int campo) {
+char * getField (char * tmp, int campo) {
     int booleanComillas = 0;
     char* ret=(char*) malloc (100*sizeof(char));
     int inicio = 0;
@@ -73,7 +73,8 @@ const char * getField (char * tmp, int campo) {
                ret[pos-inicio] = 0;
                return ret;
             }
-            final++; inicio = pos+1;
+            final++; 
+			inicio = pos+1;
         }
 
         pos++;
@@ -111,7 +112,7 @@ ListaCancion importarCanciones () {
 	while (fgets(cadena, 1023, fcsv) != NULL) { //Leerá las cadenas una por una.
     	Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
 		for (i = 0; i < 5; i++) { //Itera los campos de la cadena.
-            const char * aux = getField(cadena, i); // Se obtiene el nombre
+			char * aux = getField(cadena, i); // Se obtiene el nombre
 			printf(" %s -", aux);
             if (i == 0)	strcpy(auxSong->name, aux);
             if (i == 1) strcpy(auxSong->artist, aux);
@@ -159,7 +160,6 @@ List * crearListas (ListaCancion globalList){
 	int k = globalList.cant;
 	int contSongs = 1; //Caso inicial.
 	while (sumSong < k) {
-		
 		//Recorrer el arreglo en busca de las canciones que pertenecen a la lista.
 		for (i = 1; i < k; i++) {
 			auxSong = nextList(globalList.Canciones);
@@ -188,14 +188,14 @@ List * crearListas (ListaCancion globalList){
         cont = 0;
 		
 		//Limpiar Lista.
-        cleanList(auxSongList);
+        free(auxSongList);
         contSongs = 0;
 		
 		//Comprobar si hay más Listas.
 		if (musicList->cant == globalList.cant) break;
         if (sumSong == 0) sumSong++; //Contar la Primera Canción.
 		sumSong = sumSong + musicList->cant;
-
+		
 		//Recorrer lista global otra vez hasta hallar la otra lista.
 		auxSong = firstList(globalList.Canciones);
 		for (int i = 0; i < k; i++) {
@@ -209,6 +209,7 @@ List * crearListas (ListaCancion globalList){
 			}
 		}
 		
+		auxSongList = createList();
         system("pause");
  	}
     
@@ -376,61 +377,14 @@ void buscarCancion(ListaCancion listGlobal){
     system("pause");
 }
 
-void EliminarCancion(ListaCancion listaGlobal) {
-    if (listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
-
-    char yearCmp[5];
-    char nameCmp[100];
-    char artCmp[50];
-    
-	//areglar entrada
-    printf("\n escriba el nombre de la cancion:");
-    scanf("%100s",&nameCmp);
-
-
-    printf("\n escriba el nombre del el/la artista:");
-    scanf("%s",&artCmp);
-    puts("");
-
-    printf("\n escriba el año de la cancion:");
-    scanf("%d",&yearCmp);
-    puts("");
-
-    int cantidad=listaGlobal.cant;
-    printf("\n status cantidad:si");
-
-    Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
-    printf("\n status malloc:si");
-    auxSong = firstList(listaGlobal.Canciones); //Dirigirse a la primera canción de la lista.
-    printf("\n status first:si");
-    
-    int eliminacion=0;
-
-    for(int i=0;i<cantidad;i++){
-        if(strcmp(auxSong->name,nameCmp) == 0){  
-            if(strcmp(auxSong->artist,artCmp) == 0){
-                if(strcmp(auxSong->year,yearCmp) == 0){
-                    printf("\n--------Se elimino la cancion--------\n");
-                    popCurrent(listaGlobal.Canciones);
-                    eliminacion=1;
-                    break;
-                }
-            }
-        }
-        auxSong=nextList(listaGlobal.Canciones);
-    }
-    if (eliminacion==0) printf("\n--------No se encontro la cancion--------\n");
-    system("pause");
-}
-
-ListaCancion EliminarCancion(ListaCancion listaGlobal) {
+ListaCancion EliminarCancion (ListaCancion listaGlobal) {
     if (listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
 
     char yearCmp[5];//año de la cancion que queremos eliminar
     char nameCmp[100];//nombre de la cancion que queremos eliminar
     char artCmp[50];//nombre del aritista de la cancion que vamos a eleminar
     
-	//intuducimos los datps de la cancion a eliminar
+	//intuducimos los datos de la cancion a eliminar
     
     getchar();
     printf("\n escriba el nombre de la cancion:");
@@ -539,15 +493,12 @@ void mostrarListaRep (List * listasMusica) {
 		}
 	}
 	
+	printf("%s \n", nameAux);
 	system("pause");
 	
-	
 	//Imprimir los Datos de Cada canción.
-	Cancion * auxSong = (Cancion *) malloc (sizeof(Cancion));
+	Cancion * auxSong = (Cancion *) malloc (sizeof(Cancion));                            
 	auxSong = firstList(auxList->Canciones);
-	printf("%s -", auxSong->name);
-	/*
-	printf("Pront\n");
 	int cantSongs = auxList->cant;
 	
 	for (int i = 1; i < cantSongs; i++) {
@@ -557,7 +508,9 @@ void mostrarListaRep (List * listasMusica) {
 		printf(" %s -", auxSong->year);
 		printf(" %s\n", auxSong->repList);
 		auxSong = nextList(auxList->Canciones);
-	}*/
+	}
+	system("pause");
+	
 }
 
 void mostrarCanciones (ListaCancion listaGlobal) {
