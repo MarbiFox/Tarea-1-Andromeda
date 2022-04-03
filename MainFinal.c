@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
+#include "list.c"
 
 typedef struct {
     char name[100]; //Nombre de la Canción.
@@ -37,7 +38,7 @@ int myTolower(int);
 
 int mostrarInterfaz (int num) {
 
-    printf(" ¡Bienvenido al Programa!\n");
+    printf(" ---- Bienvenido al Programa!\n");
     printf(" ¿Que accion desea implementar hoy?\n\n");
     printf("(1) Importar canciones\n");
     printf("(2) Exportar canciones\n");
@@ -553,12 +554,11 @@ void mostrarCanciones (ListaCancion listaGlobal) {
 }
 
 void agregarCancion(ListaCancion *listaGlobal, List *ListasMusica, int cont){
-    if (cont == 1){
-
+    //Verificar si se han importando listas de reproducción.
+	if (cont == 1){
 
         ListaCancion *auxList = firstList(ListasMusica);
         Cancion *aux = firstList(auxList->Canciones);
-
 
         Cancion *cancion_agregar = (Cancion*)malloc(sizeof(Cancion));
 
@@ -594,6 +594,7 @@ void agregarCancion(ListaCancion *listaGlobal, List *ListasMusica, int cont){
                     if (strcmp(aux->name,name) == 0){
                         printf("\n---------[LA CANCION YA EXISTE EN ESTA LISTA]----------\n");
                         return;
+                        system("pause");
                     }
                     else{
                         pushBack(auxList->Canciones,cancion_agregar);
@@ -602,6 +603,7 @@ void agregarCancion(ListaCancion *listaGlobal, List *ListasMusica, int cont){
                         listaGlobal->cant++;
                         printf("\n-------[Cancion agregada]--------\n");
                         return;
+                        system("pause");
                     }
                 }
             }
@@ -609,8 +611,14 @@ void agregarCancion(ListaCancion *listaGlobal, List *ListasMusica, int cont){
         }
 
     }
-    else{
-        printf("NO HAS IMPORTADO!\n");
+    else {
+        
+		
+		
+		
+		
+		
+		printf("NO HAS IMPORTADO!\n");
     }
     printf("\nFUNCION TERMINADA!\n");
 }
@@ -665,6 +673,7 @@ int main () {
 				system("pause");
                 break;
         }
+        system("cls");
     }
     system("pause");
     
