@@ -627,7 +627,8 @@ int main () {
                 buscarCancion(listaGlobal);
                 break;
             case 5:
-				EliminarCancion(listaGlobal);
+			listaGlobal=EliminarCancion(listaGlobal);
+			listasMusica = crearListas(listaGlobal);
                 break;
             case 6:
                 mostrarNombresListas(listasMusica);
