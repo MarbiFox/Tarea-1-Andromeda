@@ -38,8 +38,10 @@ int myTolower(int);
 
 int mostrarInterfaz (int num) {
 
-    printf(" ---- Bienvenido al Programa!\n");
-    printf(" ¿Que accion desea implementar hoy?\n\n");
+    printf("===========================================\n");
+	printf("---------- Bienvenido al Programa ---------\n");
+	printf("===========================================\n\n");
+    printf("Por favor, eliga la operacion a realizar...\n\n");
     printf("(1) Importar canciones\n");
     printf("(2) Exportar canciones\n");
     printf("(3) Agregar cancion\n");
@@ -49,7 +51,7 @@ int mostrarInterfaz (int num) {
     printf("(7) Mostrar una lista de reproduccion\n");
     printf("(8) Mostrar todas las canciones\n");
     printf("(9) Finalizar programas\n\n");
-
+    printf("===========================================\n\n");
     printf("Ingrese su opcion: ");
     scanf("%d", &num);
     return num;
@@ -126,15 +128,11 @@ ListaCancion importarCanciones () {
     	Cancion * auxSong = (Cancion*) malloc (sizeof(Cancion));
 		for (i = 0; i < 5; i++) { //Itera los campos de la cadena.
 			char * aux = getField(cadena, i); // Se obtiene el nombre
-			printf(" %s -", aux);
             if (i == 0)	strcpy(auxSong->name, aux);
             if (i == 1) strcpy(auxSong->artist, aux);
             if (i == 2) strcpy(auxSong->genre, aux);
             if (i == 3) strcpy(auxSong->year, aux);
-            if (i == 4) {
-                printf("\n",aux);
-                strcpy(auxSong->repList, aux);
-            }
+            if (i == 4) strcpy(auxSong->repList, aux);
         }
         pushBack(songsList, auxSong);
         contCanciones++;
@@ -147,6 +145,8 @@ ListaCancion importarCanciones () {
 	listaGlobal.cant = contCanciones;
 	listaGlobal.listName = "Lista Global";
 
+	//Mensaje de Salida
+	printf("Se ha importado el archivo con exito!\n");
 	system("pause");
 
 	return listaGlobal;
@@ -189,19 +189,7 @@ List * crearListas (ListaCancion globalList){
 		musicList->listName = nameList;
 		pushBack(musicRepList, musicList); //Agregar a la lista de listas de Reproducción.
 
-        //BORRAR
-        int cont = 0;
-        auxSong = firstList(auxSongList);
-        while (auxSong->name != NULL)
-        {
-            cont++;
-            printf("%d------- %s\n", cont, auxSong->name);
-            auxSong = nextList(auxSongList); //BORRAR
-        }
-        cont = 0;
-
 		//Limpiar Lista.
-        //free(auxSongList);
         contSongs = 0;
 
 		//Comprobar si hay más Listas.
@@ -220,9 +208,7 @@ List * crearListas (ListaCancion globalList){
                 break;
 			}
 		}
-        printf("%s\n",musicList->listName);
 		auxSongList = createList();
-        system("pause");
  	}
 
 	//system("pause");
@@ -262,10 +248,104 @@ void exportarCanciones (ListaCancion listaGlobal) {
         //Reiniciar ciclo
         contCanciones++;
     }
+    
+    printf("\nSe ha exportado el archivo con exito!\n");
+    
     system("pause");
 
     fclose(fout);
 
+}
+
+void agregarCancion(ListaCancion *listaGlobal, List *ListasMusica, int cont){
+    
+	printf("\n===========================================\n");
+	
+	//Crear una canción.
+	Cancion *cancion_agregar = (Cancion*)malloc(sizeof(Cancion));
+	
+    char name[40];
+    printf("INGRESE NOMBRE: ");
+    scanf(" %[^\n]s",name);
+    strcpy(cancion_agregar->name,name);
+
+    char artist[40];
+    printf("INGRESE ARTISTA: ");
+    scanf(" %[^\n]s",artist);
+    strcpy(cancion_agregar->artist,artist);
+
+    char genre[40];
+    printf("INGRESE GENERO: ");
+    scanf(" %[^\n]s",genre);
+    strcpy(cancion_agregar->genre,genre);
+
+    char year[40];
+    printf("INGRESE ANO: ");
+    scanf("%s",year);
+    strcpy(cancion_agregar->year,year);
+
+    char repList[40];
+    printf("INGRESE LISTA DE REPRODUCCION: ");
+    scanf(" %[^\n]s",repList);
+    strcpy(cancion_agregar->repList,repList);
+        
+	//Verificar si se han importando listas de reproducción.
+	if (cont == 1){
+
+        ListaCancion *auxList = firstList(ListasMusica);
+        Cancion *aux = firstList(auxList->Canciones);
+        
+        while (auxList != NULL){
+            if (strcmp (auxList->listName, repList) == 0){
+            	//Búsqueda con Bool
+            	int var = 0;
+                while (aux != NULL){
+					if (strcmp(aux->name, name) == 0) {
+                    	if (strcmp(eliminarEspacios(aux->artist), eliminarEspacios(artist)) == 0) {
+                    		if (strcmp(eliminarEspacios(aux->genre), eliminarEspacios(genre)) == 0) {
+                    			if (strcmp(eliminarEspacios(aux->year), eliminarEspacios(year)) == 0) {
+                    				printf("\n---------[LA CANCION YA EXISTE EN ESTA LISTA]----------\n");
+                    				system("pause");
+                    				return;
+								}
+							}
+						}
+                    }
+                    else {
+                    	aux = nextList(auxList->Canciones); 
+                    }
+                }
+                pushBack(auxList->Canciones,cancion_agregar);
+                auxList->cant++;
+                pushBack(listaGlobal->Canciones,cancion_agregar);
+                listaGlobal->cant++;
+                printf("\n-------[Cancion agregada]--------\n");
+                system("pause");
+                return;
+            }
+            auxList = nextList(ListasMusica);
+        }
+    }
+    else {
+    	//Crear una lista de reproducción nueva cuando no hayan canciones.
+		ListaCancion * newSongList = (ListaCancion *) malloc (sizeof(ListaCancion));
+		List * newList = createList();
+		
+		pushBack(newList, cancion_agregar);
+		
+		newSongList->Canciones = newList;
+		newSongList->cant++;
+		newSongList->listName = repList;
+
+		pushBack(ListasMusica, newSongList);
+
+		listaGlobal->Canciones = newList;
+		listaGlobal->cant++;
+		listaGlobal->listName = repList;
+		
+		system("pause");
+		return;
+    }
 }
 
 //Buscar apariciones del genero ingresado en los generos de las canciones
@@ -296,6 +376,7 @@ void buscarPorGenero(ListaCancion listGlobal){
     }
     if (i == 0){
         printf("\nLo sentimos, no encontramos ninguna cancion con ese nombre en nuestra base :(\n");
+        printf("\n===========================================\n");
     }
 
 }
@@ -322,6 +403,7 @@ void buscarPorArtista(ListaCancion listGlobal){
     }
     if (i == 0){
         printf("\nLo sentimos, no encontramos ninguna cancion con ese nombre en nuestra base :(\n");
+        printf("\n===========================================\n");
     }
 
 }
@@ -349,23 +431,26 @@ void buscarPorNombre(ListaCancion listGlobal){
     }
     if (i == 0){
         printf("\nLo sentimos, no encontramos ninguna cancion con ese nombre en nuestra base :(\n");
+        printf("\n===========================================\n");
     }
 }
 
 //Menú de busqueda por nombre, artista y género
 void buscarCancion(ListaCancion listGlobal){
     if (listGlobal.cant == 0){
-        printf("No hay canciones para poder realizar una busqueda :( \n\n");
+		printf("No hay canciones para poder realizar una busqueda :( \n\n");
         return;
     } 
     system("cls");
-
+	
     int op;
     while (1){
+    	printf("===========================================\n");
         printf("\n1. Buscar por nombre de la cancion\n");
         printf("2. Buscar por artista de la cancion\n");
         printf("3. Buscar por genero\n");
-        printf("4. Volver al menu\n\n");
+        printf("4. Volver al menu\n");
+        printf("\n===========================================\n");
         printf("Ingrese su opcion: ");
         scanf("%i", &op);
         switch (op){
@@ -398,17 +483,18 @@ ListaCancion EliminarCancion (ListaCancion listaGlobal) {
     char artCmp[50];//nombre del aritista de la cancion que vamos a eleminar
 
 	//intuducimos los datos de la cancion a eliminar
-
+	
+	printf("\n===========================================\n");
     getchar();
-    printf("\n escriba el nombre de la cancion:");
+    printf("\nEscriba el nombre de la cancion: ");
     scanf("%100[^\n]s",nameCmp);
 
     getchar();
-    printf("\n escriba el nombre del el/la artista:");
+    printf("\nEscriba el nombre del el/la artista: ");
     scanf("%50[^\n]s",artCmp);
 
     getchar();
-    printf("\n escriba el año de la cancion:");
+    printf("\nEscriba el ano de la cancion: ");
     scanf("%5[^\n]s",yearCmp);
 
     int cantidad=listaGlobal.cant;//cantidad de canciones en la lista
@@ -422,14 +508,14 @@ ListaCancion EliminarCancion (ListaCancion listaGlobal) {
     for(int i=0;i<cantidad;i++){
         push=1;// iniciamos en cada ciclo push = 1
 
-        if(strcmp(auxSong->name,nameCmp) == 0){//comparamos el nombre
+        if(strcmp(eliminarEspacios(auxSong->name),eliminarEspacios(nameCmp)) == 0){//comparamos el nombre
 
-            if(strcmp(auxSong->artist,artCmp) == 0){//comparamos el arista
+            if(strcmp(eliminarEspacios(auxSong->artist),eliminarEspacios(artCmp)) == 0){//comparamos el arista
 
-                if(strcmp(auxSong->year,yearCmp) == 0){//comparamos el año
+                if(strcmp(eliminarEspacios(auxSong->year),eliminarEspacios(yearCmp)) == 0){//comparamos el año
 
                     //si todo se cumple encontraremos la cancion a eliminar
-                    printf("\n--------Se elimino la cancion--------\n");
+                    printf("\n-------Se elimino la cancion-------\n");
 
                     listaGlobal.cant--;//se descuenta de la cantidad de canciones
 
@@ -453,8 +539,9 @@ ListaCancion EliminarCancion (ListaCancion listaGlobal) {
 
     //si no se encontro la cancion se muestra un mensaje
     //si "eliminacion" es 0 significa que no se encontro
-    if (eliminacion==0) printf("\n--------No se encontro la cancion--------\n");
+    if (eliminacion==0) printf("\n------No se encontro la cancion------\n");
 
+	printf("===========================================\n");
     system("pause");
 
     //se retorna la lista
@@ -468,10 +555,13 @@ void mostrarNombresListas (List * listasMusica) {
 	auxList = firstList(listasMusica);
 
 	//Mostrar Nombres y Cantidad de Canciones.
+	printf("\n===========================================\n");
+	printf("LISTAS DE REPRODUCCION DISPONIBLES:\n");
 	while (auxList != NULL) {
-		printf("--- %s --- %d Canciones.\n", auxList->listName, auxList->cant);
+		printf("\n--- %s --- %d Canciones.\n", auxList->listName, auxList->cant);
 		auxList = nextList(listasMusica);
 	}
+	printf("\n");
 	system("pause");
 }
 
@@ -496,30 +586,28 @@ void mostrarListaRep (List * listasMusica) {
 
         if (auxList == NULL && cont == 0){
             printf("NO EXISTE LA LISTA\n");
+            system("pause");
             return;
         }
 	}
-
-	system("pause");
-
 
     Cancion *auxSong = (Cancion*)malloc(sizeof(Cancion));
     auxSong = firstList(auxList->Canciones);
 
 
 	int cantSongs = auxList->cant;
-    printf("\n------[%s]-----[%d canciones]-----\n\n",auxList->listName,auxList->cant);
+    printf("\n------[%s]-----[%d canciones]------\n\n",auxList->listName,auxList->cant);
     int contador = 1;
 	for (int i = 1; i <= cantSongs; i++) {
 		printf("%d.-%s -",contador,auxSong->name);
         printf(" %s -", auxSong->artist);
         printf(" %s -", auxSong->genre);
-		printf(" %s -", auxSong->year);
-		printf(" %s\n", auxSong->repList);
+		printf(" %s\n", auxSong->year);
 		auxSong = nextList(auxList->Canciones);
 		contador++;
 	}
     contador = 1;
+    printf("\n");
 	system("pause");
 
 }
@@ -527,6 +615,7 @@ void mostrarListaRep (List * listasMusica) {
 void mostrarCanciones (ListaCancion listaGlobal) {
 
     //Crear Interfaz.
+    printf("\n===========================================\n");
     printf("MOSTRANDO TODAS LAS CANCIONES...\n\n");
 
     //Verificar si hay más canciones.
@@ -548,79 +637,9 @@ void mostrarCanciones (ListaCancion listaGlobal) {
     }
 
 	//Mensaje de Salida
-    if (listaGlobal.cant != 1) printf("Hay un total de %d canciones...", listaGlobal.cant);
-    else printf("Hay sólo una canción...", listaGlobal.cant);
+    if (listaGlobal.cant != 1) printf("\nHay un total de %d canciones...\n", listaGlobal.cant);
+    else printf("\nHay solo una cancion...\n", listaGlobal.cant);
     system("pause");
-}
-
-void agregarCancion(ListaCancion *listaGlobal, List *ListasMusica, int cont){
-    //Verificar si se han importando listas de reproducción.
-	if (cont == 1){
-
-        ListaCancion *auxList = firstList(ListasMusica);
-        Cancion *aux = firstList(auxList->Canciones);
-
-        Cancion *cancion_agregar = (Cancion*)malloc(sizeof(Cancion));
-
-        char name[40];
-        printf("INGRESE NOMBRE: ");
-        scanf(" %[^\n]s",name);
-        strcpy(cancion_agregar->name,name);
-
-        char artist[40];
-        printf("INGRESE artist: ");
-        scanf(" %[^\n]s",artist);
-        strcpy(cancion_agregar->artist,artist);
-
-        char genre[40];
-        printf("INGRESE genre: ");
-        scanf(" %[^\n]s",genre);
-        strcpy(cancion_agregar->genre,genre);
-
-        char year[40];
-        printf("INGRESE year: ");
-        scanf("%s",year);
-        strcpy(cancion_agregar->year,year);
-
-        char repList[40];
-        printf("INGRESE replist: ");
-        scanf(" %[^\n]s",repList);
-        strcpy(cancion_agregar->repList,repList);
-
-        system("pause");
-        while (auxList != NULL){
-            if (strcmp(auxList->listName, repList) == 0){
-                while (aux != NULL){
-                    if (strcmp(aux->name,name) == 0){
-                        printf("\n---------[LA CANCION YA EXISTE EN ESTA LISTA]----------\n");
-                        return;
-                        system("pause");
-                    }
-                    else{
-                        pushBack(auxList->Canciones,cancion_agregar);
-                        auxList->cant++;
-                        pushBack(listaGlobal->Canciones,cancion_agregar);
-                        listaGlobal->cant++;
-                        printf("\n-------[Cancion agregada]--------\n");
-                        return;
-                        system("pause");
-                    }
-                }
-            }
-            auxList = nextList(ListasMusica);
-        }
-
-    }
-    else {
-        
-		
-		
-		
-		
-		
-		printf("NO HAS IMPORTADO!\n");
-    }
-    printf("\nFUNCION TERMINADA!\n");
 }
 
 //El main servirá para dirigir el programa y abrir la interfaz.
@@ -630,7 +649,6 @@ int main () {
     listaGlobal.cant = 0;
     List * listasMusica = createList(); //Listas de reproducción actuales.
 	//Ejecutar una acción según el resultado obtenido desde la interfaz.}
-
 	int cont = 0;
     while (op != 9){
         op = mostrarInterfaz(op);
@@ -645,12 +663,13 @@ int main () {
                 break;
             case 3:
 				agregarCancion(&listaGlobal,listasMusica,cont);
+				cont = 1;
                 break;
             case 4:
                 buscarCancion(listaGlobal);
                 break;
             case 5:
-			    listaGlobal=EliminarCancion(listaGlobal);
+			    listaGlobal = EliminarCancion(listaGlobal);
 			    listasMusica = crearListas(listaGlobal);
                 break;
             case 6:

@@ -7,6 +7,19 @@ sólo espero que se cumpla con colocar aquí de primera mano la información
 de sus cambios, para ir más ordenado :)
 Como sea, abajo de este párrafo comenzarán las actualizaciones.
 
+/***** ACTUALIZACIÓN v1.0 *****/
+Autor: GRUPO ANDRÓMEDA.
+Datos del Parche:
+- Todo Listo.
+NOTAS:
+- Caso especial que no funca.
+
+|
+|
+|
+|
+|
+
 /***** ACTUALIZACIÓN v0.5 (ALPHA) *****/
 Autor: GRUPO ANDRÓMEDA.
 Datos del Parche:
