@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
-#include "list.c"
 
 typedef struct {
     char name[100]; //Nombre de la Canción.
@@ -108,10 +107,17 @@ ListaCancion importarCanciones () {
 
 	//Definir Lista Global de Canciones.
 	ListaCancion listaGlobal;
-
+	
+	//Especificar Nombre del Archivo.
+	char fichero[50] = {};
+	printf("Ingrese el nombre del archivo (NO INCLUYA .CSV en el nombre): ");
+	getchar();
+	scanf("%[^\n]s", fichero);
+	strcat(fichero, ".csv"); 
+	
 	//Abrir Archivo.
 	FILE * fcsv;
-	fcsv = fopen ("Canciones.csv", "r");
+	fcsv = fopen (fichero, "r");
 	if (fcsv == NULL) {
 		printf("Error al abrir archivo.csv\n");
 		exit(1);
@@ -216,10 +222,22 @@ List * crearListas (ListaCancion globalList){
 }
 
 void exportarCanciones (ListaCancion listaGlobal) {
-
+	if (listGlobal.cant == 0){
+		printf("No se encontraron datos para exportar :( \n\n");
+		system("pause");
+        return;
+    } 
+	
+	//Especificar Nombre del Archivo.
+	char fichero[50] = {};
+	printf("Ingrese el nombre del archivo (NO INCLUYA .CSV en el nombre): ");
+	getchar();
+	scanf("%[^\n]s", fichero);
+	strcat(fichero, ".csv"); 
+	
 	//Abrir o Crear el archivo para exportar
 	FILE * fout;
-	fout = fopen("Can.csv", "w");
+	fout = fopen(fichero, "w");
 	if (fout == NULL) {
 		printf("Error al abrir archivo.csv\n");
 		exit(1);
@@ -439,6 +457,7 @@ void buscarPorNombre(ListaCancion listGlobal){
 void buscarCancion(ListaCancion listGlobal){
     if (listGlobal.cant == 0){
 		printf("No hay canciones para poder realizar una busqueda :( \n\n");
+		system("pause");
         return;
     } 
     system("cls");
@@ -476,7 +495,11 @@ void buscarCancion(ListaCancion listGlobal){
 }
 
 ListaCancion EliminarCancion (ListaCancion listaGlobal) {
-    if (listaGlobal.cant == 0) printf("No se encontraron canciones :( \n\n");
+    if (listGlobal.cant == 0){
+		printf("No se encontraron canciones :( \n\n");
+		system("pause");
+        return;
+    } 
 
     char yearCmp[5];//año de la cancion que queremos eliminar
     char nameCmp[100];//nombre de la cancion que queremos eliminar
@@ -549,7 +572,12 @@ ListaCancion EliminarCancion (ListaCancion listaGlobal) {
 }
 
 void mostrarNombresListas (List * listasMusica) {
-
+	if (listGlobal.cant == 0){
+		printf("No se encontraron listas :( \n\n");
+		system("pause");
+        return;
+    } 
+	
 	//Acceder a la lista.
 	ListaCancion * auxList = (ListaCancion *) malloc (sizeof(ListaCancion));
 	auxList = firstList(listasMusica);
@@ -566,7 +594,12 @@ void mostrarNombresListas (List * listasMusica) {
 }
 
 void mostrarListaRep (List * listasMusica) {
-
+	if (listGlobal.cant == 0){
+		printf("No se encontraron listas :( \n\n");
+		system("pause");
+        return;
+    } 
+	
 	//Preguntar por la lista a buscar.
 	ListaCancion * auxList = (ListaCancion *) malloc (sizeof(ListaCancion));
 	auxList = firstList(listasMusica);
@@ -613,7 +646,12 @@ void mostrarListaRep (List * listasMusica) {
 }
 
 void mostrarCanciones (ListaCancion listaGlobal) {
-
+	if (listGlobal.cant == 0){
+		printf("No se encontraron canciones :( \n\n");
+		system("pause");
+        return;
+    } 
+	
     //Crear Interfaz.
     printf("\n===========================================\n");
     printf("MOSTRANDO TODAS LAS CANCIONES...\n\n");
