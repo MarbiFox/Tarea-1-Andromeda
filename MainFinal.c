@@ -222,7 +222,7 @@ List * crearListas (ListaCancion globalList){
 }
 
 void exportarCanciones (ListaCancion listaGlobal) {
-	if (listGlobal.cant == 0){
+	if (listaGlobal.cant == 0){
 		printf("No se encontraron datos para exportar :( \n\n");
 		system("pause");
         return;
@@ -495,10 +495,10 @@ void buscarCancion(ListaCancion listGlobal){
 }
 
 ListaCancion EliminarCancion (ListaCancion listaGlobal) {
-    if (listGlobal.cant == 0){
+    if (listaGlobal.cant == 0){
 		printf("No se encontraron canciones :( \n\n");
 		system("pause");
-        return;
+        return listaGlobal;
     } 
 
     char yearCmp[5];//año de la cancion que queremos eliminar
@@ -572,12 +572,6 @@ ListaCancion EliminarCancion (ListaCancion listaGlobal) {
 }
 
 void mostrarNombresListas (List * listasMusica) {
-	if (listGlobal.cant == 0){
-		printf("No se encontraron listas :( \n\n");
-		system("pause");
-        return;
-    } 
-	
 	//Acceder a la lista.
 	ListaCancion * auxList = (ListaCancion *) malloc (sizeof(ListaCancion));
 	auxList = firstList(listasMusica);
@@ -594,12 +588,6 @@ void mostrarNombresListas (List * listasMusica) {
 }
 
 void mostrarListaRep (List * listasMusica) {
-	if (listGlobal.cant == 0){
-		printf("No se encontraron listas :( \n\n");
-		system("pause");
-        return;
-    } 
-	
 	//Preguntar por la lista a buscar.
 	ListaCancion * auxList = (ListaCancion *) malloc (sizeof(ListaCancion));
 	auxList = firstList(listasMusica);
@@ -646,7 +634,7 @@ void mostrarListaRep (List * listasMusica) {
 }
 
 void mostrarCanciones (ListaCancion listaGlobal) {
-	if (listGlobal.cant == 0){
+	if (listaGlobal.cant == 0){
 		printf("No se encontraron canciones :( \n\n");
 		system("pause");
         return;
@@ -708,13 +696,21 @@ int main () {
                 break;
             case 5:
 			    listaGlobal = EliminarCancion(listaGlobal);
-			    listasMusica = crearListas(listaGlobal);
+			    if (listaGlobal.cant != 0){
+                	listasMusica = crearListas(listaGlobal);
+				}
                 break;
             case 6:
-                mostrarNombresListas(listasMusica);
+                if (listaGlobal.cant != 0){
+                	mostrarNombresListas(listasMusica);
+				}
+				else printf("No hay listas para trabajar :(\n");
                 break;
             case 7:
-                mostrarListaRep(listasMusica);
+                if (listaGlobal.cant != 0){
+                	mostrarListaRep(listasMusica);
+				}
+				else printf("No hay listas para trabajar :(\n");
                 break;
             case 8:
                 mostrarCanciones(listaGlobal);
